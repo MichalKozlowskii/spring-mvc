@@ -23,23 +23,19 @@ import java.util.List;
 public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
 
-    public static final List<String> EXCLUDED_PATHS = List.of(
-            "/login",
-            "/register"
-    );
-
     @Bean
     @Order(1)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests((auth) -> {
-                    auth.requestMatchers("/", "/css/**", "/register/**").permitAll();
+                    auth.requestMatchers("/", "/login", "/register").permitAll();
                     auth.anyRequest().authenticated();
                 }).formLogin(
                         form -> form
                                 .loginPage("/login")
+                                .failureUrl("/login?error")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/")
+                                .defaultSuccessUrl("/", true)
                                 .permitAll()
                 ).logout(logout -> logout
                         .logoutUrl("/logout")

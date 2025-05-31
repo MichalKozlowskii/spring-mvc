@@ -9,18 +9,18 @@ import lombok.Data;
 @Builder
 @Data
 public class UserAuthDto {
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Username has to be specified.")
+    @NotBlank(message = "Username must not be blank.")
     @Size(min = 3, max = 20)
-    private String userName;
+    private String username;
 
-    @NotNull
-    @NotBlank
-    @Size(min = 10)
+    @NotNull(message = "Full name has to be specified.")
+    @NotBlank(message = "Full name must not be blank.")
+    @Size(min = 10, max = 40)
     private String fullName;
 
-    @NotNull
-    @NotBlank
-    @Size(min = 7)
+    @NotNull(message = "Password has to be specified.")
+    @NotBlank(message = "Password must not be blank.")
+    @Size(min = 7, max = 40)
     private String password;
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 @Data
 public class UserViewDto {
-    private String userName;
+    private String username;
     private String fullName;
     private User.Role role;
     private Boolean enabled;
