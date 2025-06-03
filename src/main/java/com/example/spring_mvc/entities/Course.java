@@ -53,13 +53,8 @@ public class Course {
     private Integer iteration;
 
     public enum Category {
-        BACKEND,
-        FRONTEND,
-        DEVOPS,
-        GAME_DEV,
-        MACHINE_LEARNING,
-        TESTING,
-        ALGORITHMS,
-        IOT
+        WEB_DEV,
+        CYBER_SECURITY,
+        CLOUD_DEVOPS
     }
 }

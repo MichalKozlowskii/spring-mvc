@@ -8,6 +8,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class User implements UserDetails {
     @NotNull
     @NotBlank
     @Size(min = 3, max = 20)
-    private String userName;
+    private String username;
 
     @NotNull
     @NotBlank
@@ -38,20 +39,23 @@ public class User implements UserDetails {
     @Size(min = 10)
     private String fullName;
 
+    @Builder.Default
+    @NotNull
     private Boolean enabled = true;
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private Role role;
+    @Builder.Default
+    private Role role = Role.STUDENT;
 
     @OneToMany(mappedBy = "user")
-    private List<Enrollment> enrollments;
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Rating> ratings;
+    private List<Rating> ratings = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Certificate> certificates;
+    private List<Certificate> certificates = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -60,7 +64,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     @Override

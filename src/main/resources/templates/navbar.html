@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<div th:fragment="navbar">
+    <nav class="bg-white shadow-md px-6 py-4 flex justify-between items-center">
+        <div class="text-xl font-bold text-blue-600">CourseHub</div>
+        <ul class="flex space-x-6 text-gray-700 font-medium">
+            <li><a th:href="@{/courses}" class="hover:text-blue-600">Courses</a></li>
+            <li><a th:href="@{/enrollments}" class="hover:text-blue-600">Enrollments</a></li>
+            <li><a th:href="@{/certificates}" class="hover:text-blue-600">Certificates</a></li>
+            <li><a th:href="@{/account}" class="hover:text-blue-600">My Account</a></li>
+
+            <li sec:authorize="isAnonymous()">
+                <a th:href="@{/login}" class="hover:text-blue-600">Login</a>
+            </li>
+
+            <li sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="hover:text-blue-600 bg-transparent border-none p-0 m-0 font-bold">
+                        Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>
