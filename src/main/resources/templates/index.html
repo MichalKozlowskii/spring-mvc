@@ -1,13 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>IT COURSES</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <title>IT COURSES - Learn Like a Boss</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 </head>
-</head>
-<body>
-    <div th:insert="/navbar::navbar"></div>
-    elo
+<body class="bg-gray-900 text-gray-100 font-sans">
+
+<div th:insert="/navbar::navbar"></div>
+
+<header class="text-center py-20 bg-gradient-to-r from-blue-800 via-indigo-900 to-purple-900">
+    <h1 class="text-5xl font-extrabold mb-4">Master IT Skills Like a True G</h1>
+    <p class="text-xl max-w-xl mx-auto opacity-80">
+        Dominate the tech game with our hardcore courses — coding, networking, cybersecurity, and more.
+    </p>
+    <a href="/courses" class="mt-8 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded shadow-lg transition duration-300">
+        Browse Courses
+    </a>
+</header>
+
+<section class="max-w-6xl mx-auto p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    <div class="bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-blue-600 transition duration-300">
+        <h2 class="text-2xl font-bold mb-3">💻 Coding Bootcamp</h2>
+        <p class="opacity-80 mb-4">
+            Learn Java, Python, JavaScript, and build projects like a boss. From zero to hero in no time.
+        </p>
+        <a href="/courses#coding" class="text-blue-400 hover:underline font-semibold">Get Started →</a>
+    </div>
+
+    <div class="bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-green-600 transition duration-300">
+        <h2 class="text-2xl font-bold mb-3">🔐 Cybersecurity</h2>
+        <p class="opacity-80 mb-4">
+            Protect networks, hack the hackers, and keep the data safe. This course is your cyber weapon.
+        </p>
+        <a href="/courses#cybersecurity" class="text-green-400 hover:underline font-semibold">Lock it Down →</a>
+    </div>
+
+    <div class="bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-pink-600 transition duration-300">
+        <h2 class="text-2xl font-bold mb-3">☁️ Cloud & DevOps</h2>
+        <p class="opacity-80 mb-4">
+            Master AWS, Docker, Kubernetes, and automate like a pro. Scale up your skills to the cloud.
+        </p>
+        <a href="/courses#cloud" class="text-pink-400 hover:underline font-semibold">Level Up →</a>
+    </div>
+
+</section>
+
+<footer class="text-center py-10 text-gray-500 opacity-70">
+    &copy; 2025 CourseHub — Keep hustling in IT
+</footer>
+
 </body>
 </html>
