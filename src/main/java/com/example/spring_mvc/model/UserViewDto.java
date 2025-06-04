@@ -9,6 +9,7 @@ import lombok.Data;
 public class UserViewDto {
     private String username;
     private String fullName;
-    private User.Role role;
+    private String role;
     private Boolean enabled;
+
 }
