@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Builder
 @Data
-public class CourseDTO {
+public class CourseDto {
     private Long id;
 
     @NotNull
