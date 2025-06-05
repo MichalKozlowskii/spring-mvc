@@ -48,6 +48,24 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Boolean deleteCourse(Long courseId, User user) {
+        if (!user.getEnabled()) return false;
+        if (user.getRole() == User.Role.STUDENT) return false;
+
+        Course foundCourse = courseRepository.findById(courseId).orElse(null);
+        if (foundCourse == null) return false;
+
+        if (user.getRole() == User.Role.INSTRUCTOR && !user.getId().equals(foundCourse.getInstructor().getId()))
+            return false;
+
+        if (!foundCourse.getEnrollments().isEmpty()) return false;
+
+        courseRepository.delete(foundCourse);
+
+        return true;
+    }
+
+    @Override
     public List<CourseDto> listCourses(User user) {
         List<Course> courses;
 
@@ -66,6 +84,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Boolean canUpdate(User user, Long courseId) {
+        if (!user.getEnabled()) return false;
         if (user.getRole() == User.Role.ADMIN) return true;
 
         return user.getRole() == User.Role.INSTRUCTOR && courseRepository.existsByIdAndInstructor(courseId, user);

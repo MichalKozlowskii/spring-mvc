@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface CourseService {
     Boolean saveCourse(CourseDto courseDto, User user);
     void editCourse(Long courseId, CourseDto courseDto, User user);
+    Boolean deleteCourse(Long courseId, User user);
     List<CourseDto> listCourses(User user);
     Boolean canUpdate(User user, Long courseId);
     Optional<CourseDto> getCourse(Long courseId);

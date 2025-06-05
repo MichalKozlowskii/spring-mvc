@@ -75,11 +75,11 @@ public class CourseController {
     }
 
     @PutMapping("/courses/edit/{courseId}")
-    public String editCourse(@PathVariable("courseId") Long courseId,
-                             @Valid @ModelAttribute("course") CourseDto courseDto,
-                             @AuthenticationPrincipal User user,
-                             Model model,
-                             BindingResult result) {
+    public String editCourseById(@PathVariable("courseId") Long courseId,
+                                 @Valid @ModelAttribute("course") CourseDto courseDto,
+                                 @AuthenticationPrincipal User user,
+                                 Model model,
+                                 BindingResult result) {
         if (!courseService.canUpdate(user, courseId)) return "redirect:/courses";
 
         verifyDates(courseDto, result);
@@ -92,6 +92,15 @@ public class CourseController {
         courseService.editCourse(courseId, courseDto, user);
 
         return "redirect:/courses";
+    }
+
+    @DeleteMapping("courses/delete/{courseId}")
+    public String deleteCourseById(@PathVariable("courseId") Long courseId,
+                                 @AuthenticationPrincipal User user) {
+
+        courseService.deleteCourse(courseId, user);
+
+        return "redirect:/courses"; // TODO: zrobic jeszcze zeby sie pokazalo czy sie udalo czy nie
     }
 
     private void verifyDates(CourseDto courseDto, BindingResult result) {
