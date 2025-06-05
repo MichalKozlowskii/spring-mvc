@@ -37,7 +37,7 @@ public class AuthController {
         }
 
         if (!userService.registerUser(userAuthDto)) {
-            result.rejectValue("userName", null,     "username already taken.");
+            result.rejectValue("userName", null,"username already taken.");
             model.addAttribute("user", userAuthDto);
             return "register";
         }
