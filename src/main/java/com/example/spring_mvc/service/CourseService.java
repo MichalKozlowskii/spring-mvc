@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CourseService {
     Boolean saveCourse(CourseDto courseDto, User user);
-    List<CourseDto> listCourses();
+    List<CourseDto> listCourses(User user);
 }

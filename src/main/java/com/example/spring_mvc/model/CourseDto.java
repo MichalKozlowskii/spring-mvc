@@ -36,7 +36,7 @@ public class CourseDto {
     @Builder.Default
     private Integer iteration = 1;
 
-    private Long instructorId;
+    private UserViewDto instructor;
 
     // Lista enrollments
 
