@@ -1,4 +1,4 @@
-package com.example.spring_mvc.model;
+package com.example.spring_mvc.model.user;
 
 import com.example.spring_mvc.entities.User;
 import lombok.Builder;

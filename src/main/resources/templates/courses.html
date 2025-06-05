@@ -7,6 +7,30 @@
     <title>Courses</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
+<div id="reiterateModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+        <h2 class="text-xl font-bold mb-4">Reiterate Course</h2>
+
+        <form id="reiterateForm" class="space-y-4">
+            <div>
+                <label for="startDate" class="block font-semibold mb-1">Start Date</label>
+                <input type="date" id="startDate" name="startDate" required class="w-full border rounded px-3 py-2" />
+            </div>
+
+            <div>
+                <label for="endDate" class="block font-semibold mb-1">End Date</label>
+                <input type="date" id="endDate" name="endDate" required class="w-full border rounded px-3 py-2" />
+            </div>
+
+            <div class="flex justify-end space-x-3 mt-6">
+                <button type="button" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700">Reiterate</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <body class="bg-gray-100 text-gray-900">
 
 <div th:insert="/navbar::navbar"></div>

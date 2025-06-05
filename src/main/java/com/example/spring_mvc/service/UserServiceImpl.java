@@ -1,7 +1,7 @@
 package com.example.spring_mvc.service;
 
 import com.example.spring_mvc.mappers.UserMapper;
-import com.example.spring_mvc.model.UserAuthDto;
+import com.example.spring_mvc.model.user.UserAuthDto;
 import com.example.spring_mvc.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

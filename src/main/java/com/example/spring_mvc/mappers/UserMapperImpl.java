@@ -1,8 +1,8 @@
 package com.example.spring_mvc.mappers;
 
 import com.example.spring_mvc.entities.User;
-import com.example.spring_mvc.model.UserAuthDto;
-import com.example.spring_mvc.model.UserViewDto;
+import com.example.spring_mvc.model.user.UserAuthDto;
+import com.example.spring_mvc.model.user.UserViewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

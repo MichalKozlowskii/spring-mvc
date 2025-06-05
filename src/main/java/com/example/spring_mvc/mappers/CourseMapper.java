@@ -1,7 +1,7 @@
 package com.example.spring_mvc.mappers;
 
 import com.example.spring_mvc.entities.Course;
-import com.example.spring_mvc.model.CourseDto;
+import com.example.spring_mvc.model.course.CourseDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

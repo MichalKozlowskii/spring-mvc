@@ -2,10 +2,9 @@ package com.example.spring_mvc.mappers;
 
 import com.example.spring_mvc.entities.Course;
 import com.example.spring_mvc.entities.User;
-import com.example.spring_mvc.model.CourseDto;
-import com.example.spring_mvc.model.UserViewDto;
+import com.example.spring_mvc.model.course.CourseDto;
+import com.example.spring_mvc.model.user.UserViewDto;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Date;

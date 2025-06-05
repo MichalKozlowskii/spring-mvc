@@ -1,12 +1,12 @@
-package com.example.spring_mvc.model;
+package com.example.spring_mvc.model.course;
 
+import com.example.spring_mvc.model.user.UserViewDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Builder
 @Data

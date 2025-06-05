@@ -3,7 +3,8 @@ package com.example.spring_mvc.service;
 import com.example.spring_mvc.entities.Course;
 import com.example.spring_mvc.entities.User;
 import com.example.spring_mvc.mappers.CourseMapper;
-import com.example.spring_mvc.model.CourseDto;
+import com.example.spring_mvc.model.course.CourseDto;
+import com.example.spring_mvc.model.course.ReiterationDto;
 import com.example.spring_mvc.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void editCourse(Long courseId, CourseDto courseDto, User user) {
+    public void editCourse(Long courseId, CourseDto courseDto) {
         Course course = courseRepository.findById(courseId).get(); // always present, checked in controller
 
         course.setTitle(courseDto.getTitle());
@@ -61,6 +62,21 @@ public class CourseServiceImpl implements CourseService {
         if (!foundCourse.getEnrollments().isEmpty()) return false;
 
         courseRepository.delete(foundCourse);
+
+        return true;
+    }
+
+    @Override
+    public Boolean reiterateCourse(Long courseId, ReiterationDto reiterationDto) {
+        Course foundCourse = courseRepository.findById(courseId).get();
+
+        if (Date.valueOf(LocalDate.now()).before(foundCourse.getEndDate())) return false;
+
+        foundCourse.setStartDate(Date.valueOf(reiterationDto.getStartDate()));
+        foundCourse.setEndDate(Date.valueOf(reiterationDto.getEndDate()));
+        foundCourse.setIteration(foundCourse.getIteration() + 1);
+
+        courseRepository.save(foundCourse);
 
         return true;
     }

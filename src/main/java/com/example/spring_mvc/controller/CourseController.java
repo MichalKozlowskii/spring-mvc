@@ -2,7 +2,8 @@ package com.example.spring_mvc.controller;
 
 import com.example.spring_mvc.entities.Course;
 import com.example.spring_mvc.entities.User;
-import com.example.spring_mvc.model.CourseDto;
+import com.example.spring_mvc.model.course.CourseDto;
+import com.example.spring_mvc.model.course.ReiterationDto;
 import com.example.spring_mvc.service.CourseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class CourseController {
                                BindingResult result,
                                Model model) {
 
-        verifyDates(courseDto, result);
+        verifyDates(courseDto.getStartDate(), courseDto.getEndDate(), result);
 
         if (result.hasErrors()) {
             model.addAttribute("course", courseDto);
@@ -82,14 +83,14 @@ public class CourseController {
                                  BindingResult result) {
         if (!courseService.canUpdate(user, courseId)) return "redirect:/courses";
 
-        verifyDates(courseDto, result);
+        verifyDates(courseDto.getStartDate(), courseDto.getEndDate(), result);
 
         if (result.hasErrors()) {
             model.addAttribute("course", courseDto);
             return "courseForm";
         }
 
-        courseService.editCourse(courseId, courseDto, user);
+        courseService.editCourse(courseId, courseDto);
 
         return "redirect:/courses";
     }
@@ -103,12 +104,43 @@ public class CourseController {
         return "redirect:/courses"; // TODO: zrobic jeszcze zeby sie pokazalo czy sie udalo czy nie
     }
 
-    private void verifyDates(CourseDto courseDto, BindingResult result) {
-        if (courseDto.getEndDate().isBefore(courseDto.getStartDate()) || courseDto.getEndDate().isBefore(LocalDate.now())) {
+    @GetMapping("courses/new-iteration/{courseId}")
+    public String reiterationForm(@PathVariable("courseId") Long courseId,
+                                  @AuthenticationPrincipal User user,
+                                  Model model) {
+        if (!courseService.canUpdate(user, courseId)) return "redirect:/courses";
+
+        model.addAttribute("reiteration", ReiterationDto.builder().build());
+        model.addAttribute("courseId", courseId);
+
+        return "reiterationForm";
+    }
+
+    @PatchMapping("courses/new-iteration/{courseId}")
+    public String reiterateCourseById(@PathVariable("courseId") Long courseId,
+                                      @Valid @ModelAttribute("reiteration") ReiterationDto reiterationDto,
+                                      @AuthenticationPrincipal User user,
+                                      Model model,
+                                      BindingResult result) {
+        if (!courseService.canUpdate(user, courseId)) return "redirect:/courses";
+
+        verifyDates(reiterationDto.getStartDate(), reiterationDto.getEndDate(), result);
+
+        if (result.hasErrors()) {
+            model.addAttribute("reiteration", reiterationDto);
+            return "reiterationForm";
+        }
+
+        courseService.reiterateCourse(courseId, reiterationDto);
+        return "redirect:/courses"; // TODO: jak wyżej
+    }
+
+    private void verifyDates(LocalDate startDate, LocalDate endDate, BindingResult result) {
+        if (endDate.isBefore(startDate) || endDate.isBefore(LocalDate.now())) {
             result.rejectValue("endDate", null, "Zła data.");
         }
 
-        if (courseDto.getStartDate().isBefore(LocalDate.now())) {
+        if (startDate.isBefore(LocalDate.now())) {
             result.rejectValue("startDate", null,"Zła data.");
         }
     }
