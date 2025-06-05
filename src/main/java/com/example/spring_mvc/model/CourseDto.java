@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Builder
@@ -25,10 +26,10 @@ public class CourseDto {
     private String category;
 
     @NotNull
-    private Date startDate;
+    private LocalDate startDate;
 
     @NotNull
-    private Date endDate;
+    private LocalDate endDate;
 
     @NotNull
     private Integer hoursPerWeek;
