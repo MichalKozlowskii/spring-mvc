@@ -16,7 +16,7 @@
         <h1 class="text-4xl font-bold">All Courses</h1>
 
         <div sec:authorize="hasRole('INSTRUCTOR')">
-            <a href="/course/add" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow">
+            <a href="/courses/add" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow">
                 + Add Course
             </a>
         </div>
@@ -27,10 +27,11 @@
             <h2 class="text-2xl font-bold text-blue-700" th:text="${course.title}">Course Title</h2>
             <p class="mt-2 text-sm text-gray-600" th:text="${course.description}">Description</p>
             <p class="mt-2"><strong>Category:</strong> <span th:text="${course.category}">Category</span></p>
-            <p class="mt-1"><strong>Start:</strong> <span th:text="${#dates.format(course.startDate, 'yyyy-MM-dd')}"></span></p>
-            <p class="mt-1"><strong>End:</strong> <span th:text="${#dates.format(course.endDate, 'yyyy-MM-dd')}"></span></p>
+            <p class="mt-1"><strong>Iteration:</strong> <span th:text="${course.getIteration()}">1</span></p>
+            <p class="mt-1"><strong>Start:</strong> <span th:text="${course.startDate.toString()}"></span></p>
+            <p class="mt-1"><strong>End:</strong> <span th:text="${course.endDate.toString()}"></span></p>
             <p class="mt-1"><strong>Hours/Week:</strong> <span th:text="${course.hoursPerWeek}">10</span></p>
-            <p class="mt-1"><strong>Instructor:</strong> <span th:text="${course.instructor != null ? course.instructor.username : 'TBA'}">Instructor Name</span></p>
+            <p class="mt-1"><strong>Instructor:</strong> <span th:text="${course.instructor.getFullName()}">Instructor Name</span></p>
         </div>
     </div>
 </div>
