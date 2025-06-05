@@ -2,6 +2,7 @@ package com.example.spring_mvc.mappers;
 
 import com.example.spring_mvc.entities.User;
 import com.example.spring_mvc.model.UserAuthDto;
+import com.example.spring_mvc.model.UserViewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,5 +19,16 @@ public class UserMapperImpl implements UserMapper {
                 .password(passwordEncoder.encode(userAuthDto.getPassword()))
                 .fullName(userAuthDto.getFullName())
                 .build();
+    }
+
+    @Override
+    public UserViewDto userToUserViewDto(User user) {
+         return UserViewDto.builder()
+                 .id(user.getId())
+                 .username(user.getUsername())
+                 .fullName(user.getFullName())
+                 .enabled(user.getEnabled())
+                 .role(user.getRole().toString())
+                 .build();
     }
 }

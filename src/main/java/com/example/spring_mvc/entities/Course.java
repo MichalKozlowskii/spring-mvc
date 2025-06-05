@@ -28,6 +28,7 @@ public class Course {
     @NotBlank
     private String description;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Category category;
 
@@ -50,7 +51,8 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<Rating> ratings;
 
-    private Integer iteration;
+    @NotNull
+    private Integer iteration = 1;
 
     public enum Category {
         WEB_DEV,
