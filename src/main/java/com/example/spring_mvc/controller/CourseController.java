@@ -26,6 +26,7 @@ public class CourseController {
     @GetMapping("/courses")
     public String listCourses(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("courses", courseService.listCourses(user));
+        model.addAttribute("userId", user.getId());
 
         return "courses";
     }
@@ -43,13 +44,12 @@ public class CourseController {
                                BindingResult result,
                                Model model) {
 
-        if (courseDto.getEndDate().isAfter(courseDto.getStartDate()) ||
-                courseDto.getEndDate().isAfter(LocalDate.now())) {
-            result.rejectValue("endDate", "Invalid date.");
+        if (courseDto.getEndDate().isBefore(courseDto.getStartDate()) || courseDto.getEndDate().isBefore(LocalDate.now())) {
+            result.rejectValue("endDate", null, "Zła data.");
         }
 
-        if (courseDto.getStartDate().isAfter(LocalDate.now())) {
-            result.rejectValue("startDate", "Invalid date.");
+        if (courseDto.getStartDate().isBefore(LocalDate.now())) {
+            result.rejectValue("startDate", null,"Zła data.");
         }
 
         if (result.hasErrors()) {

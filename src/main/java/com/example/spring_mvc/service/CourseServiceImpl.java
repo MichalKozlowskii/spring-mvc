@@ -24,7 +24,11 @@ public class CourseServiceImpl implements CourseService {
     public Boolean saveCourse(CourseDto courseDto, User user) {
         if (!user.getEnabled() || user.getRole() != User.Role.INSTRUCTOR) return false;
 
-        courseRepository.save(courseMapper.courseDtoToCourse(courseDto));
+        Course course = courseMapper.courseDtoToCourse(courseDto);
+        course.setInstructor(user);
+        course.setIteration(1);
+
+        courseRepository.save(course);
 
         return true;
     }
