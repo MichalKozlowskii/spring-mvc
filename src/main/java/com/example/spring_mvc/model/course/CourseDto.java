@@ -1,11 +1,12 @@
-package com.example.spring_mvc.model;
+package com.example.spring_mvc.model.course;
 
+import com.example.spring_mvc.model.user.UserViewDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Builder
 @Data
@@ -25,10 +26,10 @@ public class CourseDto {
     private String category;
 
     @NotNull
-    private Date startDate;
+    private LocalDate startDate;
 
     @NotNull
-    private Date endDate;
+    private LocalDate endDate;
 
     @NotNull
     private Integer hoursPerWeek;

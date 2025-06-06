@@ -1,4 +1,4 @@
-package com.example.spring_mvc.security;
+package com.example.spring_mvc.config;
 
 import com.example.spring_mvc.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;

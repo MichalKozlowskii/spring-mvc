@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Courses</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<div id="reiterateModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+        <h2 class="text-xl font-bold mb-4">Reiterate Course</h2>
+
+        <form id="reiterateForm" class="space-y-4">
+            <div>
+                <label for="startDate" class="block font-semibold mb-1">Start Date</label>
+                <input type="date" id="startDate" name="startDate" required class="w-full border rounded px-3 py-2" />
+            </div>
+
+            <div>
+                <label for="endDate" class="block font-semibold mb-1">End Date</label>
+                <input type="date" id="endDate" name="endDate" required class="w-full border rounded px-3 py-2" />
+            </div>
+
+            <div class="flex justify-end space-x-3 mt-6">
+                <button type="button" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700">Reiterate</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<body class="bg-gray-100 text-gray-900">
+
+<div th:insert="/navbar::navbar"></div>
+
+<div class="max-w-6xl mx-auto mt-10 px-4">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-4xl font-bold">Available Courses</h1>
+
+        <div sec:authorize="hasRole('INSTRUCTOR')">
+            <a href="/courses/add" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow">
+                + Add Course
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div th:each="course : ${courses}" class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+            <h2 class="text-2xl font-bold text-blue-700" th:text="${course.title}">Course Title</h2>
+            <p class="mt-2 text-sm text-gray-600" th:text="${course.description}">Description</p>
+            <p class="mt-2"><strong>Category:</strong> <span th:text="${course.category}">Category</span></p>
+            <p class="mt-1"><strong>Iteration:</strong> <span th:text="${course.getIteration()}">1</span></p>
+            <p class="mt-1"><strong>Start:</strong> <span th:text="${course.startDate.toString()}"></span></p>
+            <p class="mt-1"><strong>End:</strong> <span th:text="${course.endDate.toString()}"></span></p>
+            <p class="mt-1"><strong>Hours/Week:</strong> <span th:text="${course.hoursPerWeek}">10</span></p>
+            <p class="mt-1"><strong>Instructor:</strong> <span th:text="${course.instructor.getFullName()}">Instructor Name</span></p>
+
+            <div class="mt-4 space-y-2">
+                <!-- Enroll button -->
+                <form th:if="${course.startDate.isAfter(T(java.time.LocalDate).now())}"
+                      th:action="@{enrollments/enroll/{courseId}(courseId=${course.id})}" method="post"
+                      class="w-full">
+                    <button type="submit"
+                            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded shadow text-center">
+                        Enroll
+                    </button>
+                </form>
+
+                <div class="flex flex-wrap gap-2 justify-center mt-2"
+                     sec:authorize="hasAnyRole('INSTRUCTOR', 'ADMIN')"
+                     th:if="${course.instructor.id == userId or #authorization.expression('hasRole(''ADMIN'')')}">
+
+                    <a th:href="@{/courses/edit/{id}(id=${course.id})}"
+                       class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-semibold py-1 px-3 rounded">
+                        ✏️ Modify
+                    </a>
+
+                    <form th:action="@{/courses/delete/{id}(id=${course.id})}" th:method="DELETE"
+                          onsubmit="return confirm('Are you sure you want to delete this course?')">
+                        <button type="submit"
+                                class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-1 px-3 rounded">
+                            🗑️ Delete
+                        </button>
+                    </form>
+
+                    <a th:if="${course.endDate.isBefore(T(java.time.LocalDate).now())}"
+                       th:href="@{/courses/new-iteration/{id}(id=${course.id})}"
+                       class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-1 px-3 rounded">
+                        🔁 Reiterate
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
