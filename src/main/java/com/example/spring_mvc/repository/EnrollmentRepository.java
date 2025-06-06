@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
-    Boolean existsByCourseIdAndUser(Long courseId, User user);
+    Boolean existsByCourseIdAndUserAndStatusNot(Long courseId, User user, Enrollment.EnrollmentStatus status);
     List<Enrollment> findByUser(User user);
     List<Enrollment> findByCourse_Instructor(User user);
 }

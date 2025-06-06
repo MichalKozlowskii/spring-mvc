@@ -22,12 +22,15 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     private final CourseRepository courseRepository;
     private final EnrollmentMapper enrollmentMapper;
     @Override
-    public Boolean enrollStudent(User user, Long courseId) {
-        if (user.getRole() != User.Role.STUDENT) return false;
+    public void enrollStudent(User user, Long courseId) {
+        if (user.getRole() != User.Role.STUDENT) return;
+        if (enrollmentRepository.existsByCourseIdAndUserAndStatusNot(courseId, user, Enrollment.EnrollmentStatus.RESIGNED)) {
+            return;
+        }
 
         Course course = courseRepository.findById(courseId).orElse(null);
-        if (course == null) return false;
-        if (course.getStartDate().before(Date.valueOf(LocalDate.now()))) return false;
+        if (course == null) return;
+        if (course.getStartDate().before(Date.valueOf(LocalDate.now()))) return;
 
 
         Enrollment enrollment = Enrollment.builder()
@@ -37,13 +40,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 .build();
 
         enrollmentRepository.save(enrollment);
-
-        return true;
-    }
-
-    @Override
-    public Boolean isEnrolled(User user, Long courseId) {
-        return enrollmentRepository.existsByCourseIdAndUser(courseId, user);
     }
 
     @Override
@@ -57,5 +53,20 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         }
 
         return enrollments.stream().map(enrollmentMapper::enrollmentToEnrollmentDto).toList();
+    }
+
+    @Override
+    public void updateStatus(Long enrollmentId, String status, User user) {
+        if (user.getRole() == User.Role.STUDENT) return;
+
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElse(null);
+        if (enrollment == null) return;
+
+        User courseInstructor = enrollment.getCourse().getInstructor();
+        if (user.getRole() == User.Role.INSTRUCTOR && !user.getId().equals(courseInstructor.getId())) return;
+
+        enrollment.setStatus(Enrollment.EnrollmentStatus.valueOf(status));
+
+        enrollmentRepository.save(enrollment);
     }
 }
