@@ -59,10 +59,14 @@
 
             <div class="mt-4 space-y-2">
                 <!-- Enroll button -->
-                <a th:href="@{/enroll(courseId=${course.id})}"
-                   class="block w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded shadow text-center">
-                    Enroll
-                </a>
+                <form th:if="${course.startDate.isAfter(T(java.time.LocalDate).now())}"
+                      th:action="@{enrollments/enroll/{courseId}(courseId=${course.id})}" method="post"
+                      class="w-full">
+                    <button type="submit"
+                            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded shadow text-center">
+                        Enroll
+                    </button>
+                </form>
 
                 <div class="flex flex-wrap gap-2 justify-center mt-2"
                      sec:authorize="hasAnyRole('INSTRUCTOR', 'ADMIN')"

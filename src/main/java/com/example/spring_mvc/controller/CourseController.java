@@ -44,6 +44,10 @@ public class CourseController {
                                BindingResult result,
                                Model model) {
 
+        if (user.getRole() != User.Role.INSTRUCTOR) {
+            return "redirect:/";
+        }
+
         verifyDates(courseDto.getStartDate(), courseDto.getEndDate(), result);
 
         if (result.hasErrors()) {
