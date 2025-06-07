@@ -74,4 +74,17 @@ public class CertificateServiceImpl implements CertificateService {
         certificateRepository.save(certificate);
     }
 
+    @Override
+    public void revokeCertificate(Long certificateId, User issuer) {
+        if (issuer.getRole() == User.Role.STUDENT) return;
+
+        Certificate certificate = certificateRepository.findById(certificateId).orElse(null);
+        if (certificate == null) return;
+
+        Course course = certificate.getCourse();
+        if (issuer.getRole() == User.Role.INSTRUCTOR && !issuer.getId().equals(course.getInstructor().getId())) return;
+
+        certificateRepository.delete(certificate);
+    }
+
 }

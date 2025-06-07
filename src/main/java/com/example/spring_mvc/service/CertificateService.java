@@ -10,4 +10,5 @@ public interface CertificateService {
     List<CertificateDto> listCertificates(User user);
     List<EnrollmentDto> listFinishedEnrollmentsNotCertified(User user);
     void issueCertificate(Long enrollmentId, User user);
+    void revokeCertificate(Long certificateId, User user);
 }

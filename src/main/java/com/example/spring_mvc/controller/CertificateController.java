@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/certificates")
@@ -37,8 +34,16 @@ public class CertificateController {
     @PostMapping("/issue/{enrollmentId}")
     public String issueCertificate(@PathVariable Long enrollmentId,
                                    @AuthenticationPrincipal User user) {
+
         certificateService.issueCertificate(enrollmentId, user);
         return "redirect:/certificates/issue";
     }
 
+    @DeleteMapping("/revoke/{certificateId}")
+    public String revokeCertificate(@PathVariable Long certificateId,
+                                    @AuthenticationPrincipal User user) {
+
+        certificateService.revokeCertificate(certificateId, user);
+        return "redirect:/certificates";
+    }
 }
