@@ -22,5 +22,5 @@ public class RatingDto {
     private String comment;
 
     private UserViewDto user;
-    private CourseDto courseDto;
+    private CourseDto course;
 }

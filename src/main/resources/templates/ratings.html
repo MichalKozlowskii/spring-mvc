@@ -31,7 +31,7 @@
         </thead>
         <tbody>
         <tr th:each="rating : ${ratings}" class="border-b">
-            <td class="px-4 py-3 border" th:text="${rating.courseDto.title}"></td>
+            <td class="px-4 py-3 border" th:text="${rating.course.title}"></td>
             <td class="px-4 py-3 border" th:text="${rating.stars + ' / 5'}"></td>
             <td class="px-4 py-3 border" th:if="${isAdmin}" th:text="${rating.user.fullName}"></td>
             <td class="px-4 py-3 border" th:text="${rating.comment}"></td>

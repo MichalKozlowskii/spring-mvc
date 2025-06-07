@@ -21,6 +21,7 @@ public class RatingServiceImpl implements RatingService {
     private final RatingMapper ratingMapper;
     private final RatingRepository ratingRepository;
     private final EnrollmentRepository enrollmentRepository;
+    private final CourseRepository courseRepository;
 
     @Override
     public List<RatingDto> listRatings(User user) {
@@ -36,16 +37,16 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public Boolean addRating(Long enrollmentId, RatingDto ratingDto, User user) {
+    public Boolean addRating(Long courseId, RatingDto ratingDto, User user) {
         if (user.getRole() != User.Role.STUDENT) return false;
 
-        Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElse(null);
-        if (enrollment == null) return false;
-        if (!enrollment.getUser().getId().equals(user.getId())) return false;
-        if (enrollment.getStatus() == Enrollment.EnrollmentStatus.IN_PROGRESS) return false;
-
-        Course course = enrollment.getCourse();
+        Course course = courseRepository.findById(courseId).orElse(null);
+        if (course == null) return false;
         if (ratingRepository.existsByCourseAndUser(course, user)) return false;
+
+        Enrollment enrollment = enrollmentRepository.findByCourseAndUser(course, user);
+        if (enrollment == null) return false;
+        if (enrollment.getStatus() == Enrollment.EnrollmentStatus.IN_PROGRESS) return false;
 
         Rating rating = Rating.builder()
                 .stars(ratingDto.getStars())
@@ -81,6 +82,13 @@ public class RatingServiceImpl implements RatingService {
         if (user.getRole() == User.Role.INSTRUCTOR && !user.getId().equals(course.getInstructor().getId())) return;
 
         ratingRepository.delete(rating);
+    }
+
+    @Override
+    public RatingDto getRatingById(Long ratingId) {
+        return ratingRepository.findById(ratingId)
+                .map(ratingMapper::ratingToRatingDto)
+                .orElse(null);
     }
 
 }

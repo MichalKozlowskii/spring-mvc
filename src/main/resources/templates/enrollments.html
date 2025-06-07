@@ -42,6 +42,14 @@
                     </button>
                 </form>
             </td>
+
+            <!-- For non-admin & COMPLETED or RESIGNED, show Add Rating button -->
+            <td class="px-4 py-3 border" th:if="${!isAdmin and (enrollment.status == 'COMPLETED' or enrollment.status == 'RESIGNED')}">
+                <a th:href="@{'/ratings/add/' + ${enrollment.course.id}}"
+                   class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                    Add Rating
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>
