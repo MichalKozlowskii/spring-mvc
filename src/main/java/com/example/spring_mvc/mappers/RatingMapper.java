@@ -7,5 +7,4 @@ import org.mapstruct.Mapper;
 @Mapper(uses = {UserMapper.class, CourseMapper.class})
 public interface RatingMapper {
     RatingDto ratingToRatingDto(Rating rating);
-    Rating ratingDtoToRating(RatingDto ratingDto);
 }
