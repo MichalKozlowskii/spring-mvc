@@ -7,6 +7,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -14,13 +16,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class CertificateController {
     private final CertificateService certificateService;
+    @GetMapping
+    public String listCertificates(@AuthenticationPrincipal User user, Model model) {
 
-        @GetMapping
-        public String listCertificates(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("certificates", certificateService.listCertificates(user));
+        model.addAttribute("isAdmin", user.getRole() != User.Role.STUDENT);
 
-            model.addAttribute("certificates", certificateService.listCertificates(user));
-            model.addAttribute("isAdmin", user.getRole() != User.Role.STUDENT);
+        return "certificates";
+    }
 
-            return "certificates";
-        }
+    @GetMapping("/issue")
+    public String listFinishedEnrollmentsNotCertified(@AuthenticationPrincipal User user, Model model) {
+        if (user.getRole() == User.Role.STUDENT) return "redirect:/certificates";
+
+        model.addAttribute("enrollments", certificateService.listFinishedEnrollmentsNotCertified(user));
+
+        return "issue_certificates";
+    }
+
+    @PostMapping("/issue/{enrollmentId}")
+    public String issueCertificate(@PathVariable Long enrollmentId,
+                                   @AuthenticationPrincipal User user) {
+        certificateService.issueCertificate(enrollmentId, user);
+        return "redirect:/certificates/issue";
+    }
+
 }
