@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ratings</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+<div th:insert="/navbar::navbar"></div>
+
+<div class="max-w-5xl mx-auto mt-10 p-6 bg-white rounded-lg shadow">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold text-yellow-600">Course Ratings</h1>
+
+        <a th:if="${!isAdmin}"
+           href="/ratings/add"
+           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Add Rating
+        </a>
+    </div>
+
+    <table class="min-w-full table-auto border border-gray-300">
+        <thead class="bg-gray-200 text-left">
+        <tr>
+            <th class="px-4 py-2 border">Course</th>
+            <th class="px-4 py-2 border">Stars</th>
+            <th class="px-4 py-2 border" th:if="${isAdmin}">Rated By</th>
+            <th class="px-4 py-2 border">Comment</th>
+            <th class="px-4 py-2 border">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rating : ${ratings}" class="border-b">
+            <td class="px-4 py-3 border" th:text="${rating.course.title}"></td>
+            <td class="px-4 py-3 border" th:text="${rating.stars + ' / 5'}"></td>
+            <td class="px-4 py-3 border" th:if="${isAdmin}" th:text="${rating.user.fullName}"></td>
+            <td class="px-4 py-3 border" th:text="${rating.comment}"></td>
+            <td class="px-4 py-3 border space-x-2">
+                <a th:if="${!isAdmin}" th:href="@{'/ratings/edit/' + ${rating.id}}"
+                   class="text-blue-600 hover:underline font-semibold">Edit</a>
+                <form th:action="@{'/ratings/delete/' + ${rating.id}}" th:method="delete"
+                      onsubmit="return confirm('Are you sure you want to delete this rating?')" style="display:inline;">
+                    <button type="submit" class="text-red-600 hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer">
+                        Delete
+                    </button>
+                </form>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
