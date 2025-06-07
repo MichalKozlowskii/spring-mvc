@@ -67,4 +67,25 @@ public class RatingController {
 
         return "ratingForm";
     }
+
+    @PatchMapping("/edit/{ratingId}")
+    public String editRating(@PathVariable Long ratingId,
+                             @AuthenticationPrincipal User user,
+                             @Valid @ModelAttribute RatingDto ratingDto,
+                             BindingResult result) {
+        if (result.hasErrors()) {
+            return "redirect:/ratings/edit/" + ratingId;
+        }
+
+        ratingService.updateRating(ratingId, ratingDto, user);
+
+        return "redirect:/ratings";
+    }
+
+    @DeleteMapping("/delete/{ratingId}")
+    public String deleteRating(@PathVariable Long ratingId, @AuthenticationPrincipal User user) {
+        ratingService.deleteRating(ratingId, user);
+
+        return "redirect:/ratings";
+    }
 }
