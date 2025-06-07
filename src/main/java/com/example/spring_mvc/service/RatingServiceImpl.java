@@ -61,7 +61,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public void updateRating(Long ratingId, RatingDto ratingDto, User user) {
+    public void updateRatingById(Long ratingId, RatingDto ratingDto, User user) {
         Rating rating =  ratingRepository.findById(ratingId).orElse(null);
         if (rating == null) return;
         if (!rating.getUser().getId().equals(user.getId())) return;
@@ -73,7 +73,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public void deleteRating(Long ratingId, User user) {
+    public void deleteRatingById(Long ratingId, User user) {
         Rating rating = ratingRepository.findById(ratingId).orElse(null);
         if (rating == null) return;
         if (user.getRole() == User.Role.STUDENT && !user.getId().equals(rating.getUser().getId())) return;
@@ -89,6 +89,18 @@ public class RatingServiceImpl implements RatingService {
         return ratingRepository.findById(ratingId)
                 .map(ratingMapper::ratingToRatingDto)
                 .orElse(null);
+    }
+
+    @Override
+    public Double getAvgRatingOfCourse(Long courseId) {
+        return ratingRepository.findAverageStarsByCourseId(courseId);
+    }
+
+    @Override
+    public List<RatingDto> listRatingsOfCourse(Long courseId) {
+        return ratingRepository.findRatingsByCourseId(courseId).stream()
+                .map(ratingMapper::ratingToRatingDto)
+                .toList();
     }
 
 }

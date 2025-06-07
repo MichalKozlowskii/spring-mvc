@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8" />
+    <title>Course Ratings</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+<div th:insert="/navbar :: navbar"></div>
+
+<div class="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-lg shadow">
+    <h1 class="text-3xl font-bold mb-4 text-blue-700">Course Ratings</h1>
+
+    <div class="mb-6">
+        <span class="text-xl font-semibold">Average Rating:</span>
+        <span class="text-yellow-500 text-xl font-bold" th:text="${average} != null ? ${average} : 'No ratings yet'"></span>
+    </div>
+
+    <div th:if="${ratings.isEmpty()}">
+        <p class="text-gray-600">No ratings have been submitted for this course yet.</p>
+    </div>
+
+    <div th:each="rating : ${ratings}" class="mb-4 p-4 border rounded shadow-sm hover:shadow-md transition">
+        <div class="flex justify-between items-center mb-2">
+            <span class="font-semibold text-blue-700" th:text="${rating.user.fullName}">User Name</span>
+            <span class="text-yellow-500 font-bold" th:text="${rating.stars} + ' ⭐'">5 ⭐</span>
+        </div>
+        <p class="text-gray-800" th:text="${rating.comment}">This course is dope!</p>
+    </div>
+
+    <div class="mt-8">
+        <a href="/courses" class="text-blue-600 hover:underline">← Back to courses</a>
+    </div>
+</div>
+
+</body>
+</html>

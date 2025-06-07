@@ -4,8 +4,6 @@ import com.example.spring_mvc.entities.Course;
 import com.example.spring_mvc.entities.Enrollment;
 import com.example.spring_mvc.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

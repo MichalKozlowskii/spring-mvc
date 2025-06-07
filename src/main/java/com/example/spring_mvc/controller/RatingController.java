@@ -28,6 +28,16 @@ public class RatingController {
         return "ratings";
     }
 
+    @GetMapping("/{courseId}")
+    public String listRatingsOfCourse(@PathVariable Long courseId,
+                                      @AuthenticationPrincipal User user,
+                                      Model model) {
+        model.addAttribute("average", ratingService.getAvgRatingOfCourse(courseId));
+        model.addAttribute("ratings", ratingService.listRatingsOfCourse(courseId));
+
+        return "course_ratings";
+    }
+
     @GetMapping("/add/{courseId}")
     public String addRatingForm(@PathVariable Long courseId, Model model) {
         CourseDto course = courseService.getCourse(courseId).orElse(null);
@@ -77,14 +87,14 @@ public class RatingController {
             return "redirect:/ratings/edit/" + ratingId;
         }
 
-        ratingService.updateRating(ratingId, ratingDto, user);
+        ratingService.updateRatingById(ratingId, ratingDto, user);
 
         return "redirect:/ratings";
     }
 
     @DeleteMapping("/delete/{ratingId}")
     public String deleteRating(@PathVariable Long ratingId, @AuthenticationPrincipal User user) {
-        ratingService.deleteRating(ratingId, user);
+        ratingService.deleteRatingById(ratingId, user);
 
         return "redirect:/ratings";
     }
