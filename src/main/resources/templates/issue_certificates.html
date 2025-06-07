@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Issue Certificates</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+<div th:insert="/navbar::navbar"></div>
+
+<div class="max-w-5xl mx-auto mt-10 p-6 bg-white rounded-lg shadow">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold text-blue-700">Issue Certificates</h1>
+        <a href="/certificates" class="text-blue-600 hover:underline">Back to Certificates</a>
+    </div>
+
+    <table class="min-w-full table-auto border border-gray-300">
+        <thead class="bg-gray-200 text-left">
+        <tr>
+            <th class="px-4 py-2 border">Student</th>
+            <th class="px-4 py-2 border">Course</th>
+            <th class="px-4 py-2 border">Completed On</th>
+            <th class="px-4 py-2 border">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="enrollment : ${enrollments}" class="border-b">
+            <td class="px-4 py-3 border" th:text="${enrollment.user.fullName}"></td>
+            <td class="px-4 py-3 border" th:text="${enrollment.course.title}"></td>
+            <td class="px-4 py-3 border" th:text="${enrollment.enrollmentDate}"></td>
+            <td class="px-4 py-3 border">
+                <form th:action="@{'/certificates/issue/' + ${enrollment.id}}" method="post">
+                    <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                        Issue Certificate
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

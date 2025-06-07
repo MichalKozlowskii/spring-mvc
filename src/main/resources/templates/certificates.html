@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificates</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+<div th:insert="/navbar::navbar"></div>
+
+<div class="max-w-5xl mx-auto mt-10 p-6 bg-white rounded-lg shadow">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold text-green-700">Certificates</h1>
+        <a th:if="${isAdmin}"
+           href="/certificates/issue"
+           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Issue New Certificate
+        </a>
+    </div>
+
+
+    <table class="min-w-full table-auto border border-gray-300">
+        <thead class="bg-gray-200 text-left">
+        <tr>
+            <th class="px-4 py-2 border">Course</th>
+            <th class="px-4 py-2 border">Issued On</th>
+            <th class="px-4 py-2 border" th:if="${isAdmin}">Certified User</th>
+            <th class="px-4 py-2 border" th:if="${isAdmin}">Revoke?</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cert : ${certificates}" class="border-b">
+            <td class="px-4 py-3 border" th:text="${cert.course.title}"></td>
+            <td class="px-4 py-3 border" th:text="${cert.date}"></td>
+            <td class="px-4 py-3 border" th:if="${isAdmin}" th:text="${cert.user.fullName}"></td>
+
+            <td class="px-4 py-3 border" th:if="${isAdmin}">
+                <form th:action="@{/certificates/revoke/{id}(id=${cert.id})}" th:method="delete">
+                    <input type="hidden" name="certificateId" th:value="${cert.id}" />
+                    <button type="submit"
+                            class="text-red-600 hover:underline font-semibold">
+                        Revoke
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

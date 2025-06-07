@@ -35,10 +35,10 @@ public class EnrollmentController {
         return "enrollments";
     }
 
-    @PatchMapping("/{id}/status")
-    public String updateStatus(@PathVariable Long id, @RequestParam String status,
+    @PatchMapping("/{courseId}/status")
+    public String updateStatus(@PathVariable Long courseId, @RequestParam String status,
                                @AuthenticationPrincipal User user) {
-        enrollmentService.updateStatus(id, status, user);
+        enrollmentService.updateStatus(courseId, status, user);
 
         return "redirect:/enrollments";
     }
