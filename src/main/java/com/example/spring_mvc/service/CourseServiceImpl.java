@@ -88,7 +88,7 @@ public class CourseServiceImpl implements CourseService {
         if (user.getRole() == User.Role.ADMIN) {
             courses = courseRepository.findAll();
         } else if (user.getRole() == User.Role.INSTRUCTOR) {
-            courses = courseRepository.findByInstructor(user);
+            courses = courseRepository.findByInstructorId(user.getId());
         } else {
             courses = courseRepository.findByEndDateAfter(Date.valueOf(LocalDate.now()));
         }
@@ -103,7 +103,7 @@ public class CourseServiceImpl implements CourseService {
         if (!user.getEnabled()) return false;
         if (user.getRole() == User.Role.ADMIN) return true;
 
-        return user.getRole() == User.Role.INSTRUCTOR && courseRepository.existsByIdAndInstructor(courseId, user);
+        return user.getRole() == User.Role.INSTRUCTOR && courseRepository.existsByIdAndInstructorId(courseId, user.getId());
     }
 
     @Override

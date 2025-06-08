@@ -30,7 +30,6 @@ public class RatingController {
 
     @GetMapping("/{courseId}")
     public String listRatingsOfCourse(@PathVariable Long courseId,
-                                      @AuthenticationPrincipal User user,
                                       Model model) {
         model.addAttribute("average", ratingService.getAvgRatingOfCourse(courseId));
         model.addAttribute("ratings", ratingService.listRatingsOfCourse(courseId));

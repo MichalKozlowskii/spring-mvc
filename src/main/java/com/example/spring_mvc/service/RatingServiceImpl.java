@@ -28,8 +28,8 @@ public class RatingServiceImpl implements RatingService {
         List<Rating> ratings = new ArrayList<>();
 
         switch (user.getRole()) {
-            case STUDENT -> ratings = ratingRepository.findRatingsByUser(user);
-            case INSTRUCTOR -> ratings = ratingRepository.findRatingsByCourse_Instructor(user);
+            case STUDENT -> ratings = ratingRepository.findRatingsByUserId(user.getId());
+            case INSTRUCTOR -> ratings = ratingRepository.findRatingsByCourse_InstructorId(user.getId());
             case ADMIN -> ratings = ratingRepository.findAll();
         }
 
@@ -39,14 +39,18 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public Boolean addRating(Long courseId, RatingDto ratingDto, User user) {
         if (user.getRole() != User.Role.STUDENT) return false;
+        System.out.println(1);
 
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course == null) return false;
-        if (ratingRepository.existsByCourseAndUser(course, user)) return false;
+        System.out.println(11);
+        if (ratingRepository.existsByCourseIdAndUserId(course.getId(), user.getId())) return false;
+        System.out.println(2);
 
-        Enrollment enrollment = enrollmentRepository.findByCourseAndUser(course, user);
+        Enrollment enrollment = enrollmentRepository.findByCourseIdAndUserId(course.getId(), user.getId());
         if (enrollment == null) return false;
         if (enrollment.getStatus() == Enrollment.EnrollmentStatus.IN_PROGRESS) return false;
+        System.out.println(3);
 
         Rating rating = Rating.builder()
                 .stars(ratingDto.getStars())

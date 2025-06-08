@@ -29,8 +29,8 @@ public class CertificateServiceImpl implements CertificateService {
         List<Certificate> certificates = new ArrayList<>();
 
         switch (user.getRole()) {
-            case STUDENT -> certificates = certificateRepository.findByUser(user);
-            case INSTRUCTOR -> certificates = certificateRepository.findByCourse_Instructor(user);
+            case STUDENT -> certificates = certificateRepository.findByUserId(user.getId());
+            case INSTRUCTOR -> certificates = certificateRepository.findByCourse_InstructorId(user.getId());
             case ADMIN -> certificates = certificateRepository.findAll();
         }
 
@@ -46,11 +46,11 @@ public class CertificateServiceImpl implements CertificateService {
                     enrollments = enrollmentRepository.findByStatus(Enrollment.EnrollmentStatus.COMPLETED);
             case INSTRUCTOR ->
                     enrollments = enrollmentRepository
-                            .findByCourse_InstructorAndStatus(issuer, Enrollment.EnrollmentStatus.COMPLETED);
+                            .findByCourse_InstructorIdAndStatus(issuer.getId(), Enrollment.EnrollmentStatus.COMPLETED);
         }
 
         return enrollments.stream()
-                .filter(e -> !certificateRepository.existsByUserAndCourse(e.getUser(), e.getCourse()))
+                .filter(e -> !certificateRepository.existsByUserIdAndCourseId(e.getUser().getId(), e.getCourse().getId()))
                 .map(enrollmentMapper::enrollmentToEnrollmentDto)
                 .toList();
     }
@@ -64,7 +64,7 @@ public class CertificateServiceImpl implements CertificateService {
 
         Course course = enrollment.getCourse();
         if (issuer.getRole() == User.Role.INSTRUCTOR && !issuer.getId().equals(course.getInstructor().getId())) return;
-        if (certificateRepository.existsByUserAndCourse(enrollment.getUser(), course)) return;
+        if (certificateRepository.existsByUserIdAndCourseId(enrollment.getUser().getId(), course.getId())) return;
 
         Certificate certificate = Certificate.builder()
                 .user(enrollment.getUser())

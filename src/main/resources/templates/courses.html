@@ -61,7 +61,8 @@
                 <!-- Enroll button -->
                 <form th:if="${course.startDate.isAfter(T(java.time.LocalDate).now())}"
                       th:action="@{enrollments/enroll/{courseId}(courseId=${course.id})}" method="post"
-                      class="w-full">
+                      class="w-full"
+                      sec:authorize="hasRole('STUDENT')">
                     <button type="submit"
                             class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded shadow text-center">
                         Enroll

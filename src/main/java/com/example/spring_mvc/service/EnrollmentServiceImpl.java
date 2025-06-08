@@ -24,7 +24,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Override
     public void enrollStudent(User user, Long courseId) {
         if (user.getRole() != User.Role.STUDENT) return;
-        if (enrollmentRepository.existsByCourseIdAndUserAndStatusNot(courseId, user, Enrollment.EnrollmentStatus.RESIGNED)) {
+        if (enrollmentRepository.existsByCourseIdAndUserIdAndStatusNot(courseId, user.getId(), Enrollment.EnrollmentStatus.RESIGNED)) {
             return;
         }
 
@@ -47,9 +47,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         List<Enrollment> enrollments = new ArrayList<>();
 
         switch (user.getRole()) {
-            case STUDENT -> enrollments = enrollmentRepository.findByUser(user);
+            case STUDENT -> enrollments = enrollmentRepository.findByUserId(user.getId());
             case ADMIN -> enrollments = enrollmentRepository.findAll();
-            case INSTRUCTOR -> enrollments = enrollmentRepository.findByCourse_Instructor(user);
+            case INSTRUCTOR -> enrollments = enrollmentRepository.findByCourse_InstructorId(user.getId());
         }
 
         return enrollments.stream().map(enrollmentMapper::enrollmentToEnrollmentDto).toList();
