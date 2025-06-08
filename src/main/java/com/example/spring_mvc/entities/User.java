@@ -36,7 +36,7 @@ public class User implements UserDetails {
 
     @NotNull
     @NotBlank
-    @Size(min = 10)
+    @Size(min = 6)
     private String fullName;
 
     @Builder.Default
@@ -47,16 +47,6 @@ public class User implements UserDetails {
     @NotNull
     @Builder.Default
     private Role role = Role.STUDENT;
-
-    @OneToMany(mappedBy = "user")
-    private List<Enrollment> enrollments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Rating> ratings = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Certificate> certificates = new ArrayList<>();
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> "ROLE_" + this.role.name());

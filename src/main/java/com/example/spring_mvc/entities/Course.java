@@ -48,9 +48,6 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<Enrollment> enrollments;
 
-    @OneToMany(mappedBy = "course")
-    private List<Rating> ratings;
-
     @NotNull
     private Integer iteration = 1;
 
